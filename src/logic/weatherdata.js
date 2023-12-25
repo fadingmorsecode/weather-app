@@ -1,6 +1,6 @@
 // functions that can take a location and return the weather data for that location
 
-async function getCurrentWeatherData(search) {
+export async function getCurrentWeatherData(search) {
   const currentResponse = await fetch(
     `http://api.weatherapi.com/v1/current.json?key=e27d0611824649cba3880002231612&q=${search}&aqi=no`,
     { mode: "cors" },
@@ -9,7 +9,7 @@ async function getCurrentWeatherData(search) {
   return currentWeatherData;
 }
 
-async function getForecastWeatherData(search) {
+export async function getForecastWeatherData(search) {
   const forecastResponse = await fetch(
     `http://api.weatherapi.com/v1/forecast.json?key=e27d0611824649cba3880002231612&q=${search}&days=3&aqi=no&alerts=no`,
     { mode: "cors" },
@@ -18,7 +18,7 @@ async function getForecastWeatherData(search) {
   return forecastWeatherData;
 }
 
-async function processCurrentWeatherData(weatherData) {
+export async function processCurrentWeatherData(weatherData) {
   const toFilter = await weatherData;
   const filtered = {
     name: toFilter.location.name,
@@ -30,7 +30,7 @@ async function processCurrentWeatherData(weatherData) {
   return filtered;
 }
 
-async function processForecastWeatherData(weatherData) {
+export async function processForecastWeatherData(weatherData) {
   const toFilter = await weatherData;
   const filtered = [];
   toFilter.forecast.forecastday.forEach((day) => {
