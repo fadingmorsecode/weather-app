@@ -3,8 +3,7 @@ import { getForecastWeatherData } from "./weatherdata";
 import { processCurrentWeatherData } from "./weatherdata";
 import { processForecastWeatherData } from "./weatherdata";
 
-const form = document.querySelector("form");
-const input = document.querySelector("input");
+const input = document.querySelector("#search-input");
 
 async function retrieveAllWeatherData(searchValue) {
   const currentWeatherData = await processCurrentWeatherData(
