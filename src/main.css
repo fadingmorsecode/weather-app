@@ -296,6 +296,10 @@ input:checked + .slider:before {
   font-size: 1.8rem;
 }
 
+.current-country-text {
+  font-size: 1.2rem;
+}
+
 .current-temp-text,
 .forecast-temp-text {
   position: relative;
@@ -303,8 +307,7 @@ input:checked + .slider:before {
   font-weight: 300;
 }
 
-.current-temp-text::after,
-.forecast-temp-text::after {
+.current-temp-text::after {
   position: absolute;
   content: "°";
 }
@@ -314,7 +317,6 @@ input:checked + .slider:before {
   font-size: 1.3rem;
 }
 
-.current-range-container,
 .forecast-range-container {
   display: flex;
   gap: 15px;
