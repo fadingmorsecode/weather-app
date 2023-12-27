@@ -7,6 +7,15 @@ import deleteTemplate from "../dom/templatedeletion.js";
 import getCurrentUnit from "./temperatureunit.js";
 
 const input = document.querySelector("#search-input");
+const currentWeatherParent = document.querySelector(".current-weather");
+const forecastWeatherParent = document.querySelector(".forecast-weather");
+
+let storedWeather = [];
+
+function storeTemplateData(currentWeatherData, forecastWeatherData) {
+  storedWeather[0] = currentWeatherData;
+  storedWeather[1] = forecastWeatherData;
+}
 
 function renderTemplate() {
   deleteTemplate(); // delete any existing template
@@ -27,7 +36,6 @@ function appendTemplateData(currentData, forecastData) {
 
   const forecastContianers = document.querySelectorAll(".forecast-container");
   const forecastArray = Array.from(forecastContianers);
-  console.log(forecastArray[0].childNodes[2]);
   for (let i = 0; i < forecastArray.length; i++) {
     forecastArray[i].children[0].textContent = forecastData[i].date;
     forecastArray[i].childNodes[1].textContent = forecastData[i].condition;
@@ -38,7 +46,6 @@ function appendTemplateData(currentData, forecastData) {
       forecastData[i][`maxtemp_${currentUnit}`]
     }`;
   }
-  console.log(currentData, forecastData);
 }
 
 async function retrieveAllWeatherData(searchValue) {
@@ -50,15 +57,23 @@ async function retrieveAllWeatherData(searchValue) {
   );
   renderTemplate();
   appendTemplateData(currentWeatherData, forecastWeatherData);
+  storeTemplateData(currentWeatherData, forecastWeatherData);
 }
 
-function getSearchValue(e) {
+function inputAction(e) {
   if (e.target.matches("#search-btn")) {
     e.preventDefault();
     const toSearch = input.value;
     retrieveAllWeatherData(toSearch);
+  } else if (
+    e.target.matches('input[type = "checkbox"]') &&
+    currentWeatherParent.firstChild &&
+    forecastWeatherParent.firstChild
+  ) {
+    renderTemplate();
+    appendTemplateData(storedWeather[0], storedWeather[1]);
   }
 }
-export default function loadSearchListener() {
-  document.addEventListener("click", getSearchValue);
+export default function loadDelegation() {
+  document.addEventListener("click", inputAction);
 }

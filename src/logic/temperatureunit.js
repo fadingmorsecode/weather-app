@@ -8,5 +8,3 @@ export default function getCurrentUnit() {
   }
   return unit;
 }
-
-export function changeUnit() {}
