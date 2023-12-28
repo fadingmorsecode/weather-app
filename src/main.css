@@ -332,3 +332,5 @@ input:checked + .slider:before {
   justify-items: center;
   align-items: center;
 }
+
+/* loading */

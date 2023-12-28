@@ -2,6 +2,8 @@ import { getCurrentWeatherData } from "./weatherdata";
 import { getForecastWeatherData } from "./weatherdata";
 import { processCurrentWeatherData } from "./weatherdata";
 import { processForecastWeatherData } from "./weatherdata";
+import { format } from "date-fns";
+import { parseISO } from "date-fns";
 import createTemplate from "../dom/template.js";
 import deleteTemplate from "../dom/templatedeletion.js";
 import getCurrentUnit from "./temperatureunit.js";
@@ -37,7 +39,8 @@ function appendTemplateData(currentData, forecastData) {
   const forecastContianers = document.querySelectorAll(".forecast-container");
   const forecastArray = Array.from(forecastContianers);
   for (let i = 0; i < forecastArray.length; i++) {
-    forecastArray[i].children[0].textContent = forecastData[i].date;
+    const parsedDate = parseISO(forecastData[i].date);
+    forecastArray[i].children[0].textContent = format(parsedDate, "MMMM do");
     forecastArray[i].childNodes[1].textContent = forecastData[i].condition;
     forecastArray[i].childNodes[2].childNodes[0].textContent = `Low: ${
       forecastData[i][`mintemp_${currentUnit}`]
