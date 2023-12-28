@@ -52,12 +52,15 @@ function appendTemplateData(currentData, forecastData) {
 }
 
 async function retrieveAllWeatherData(searchValue) {
+  const loadingElement = document.querySelector(".lds-dual-ring");
+  loadingElement.classList.toggle("show");
   const currentWeatherData = await processCurrentWeatherData(
     getCurrentWeatherData(searchValue),
   );
   const forecastWeatherData = await processForecastWeatherData(
     getForecastWeatherData(searchValue),
   );
+  loadingElement.classList.toggle("show");
   renderTemplate();
   appendTemplateData(currentWeatherData, forecastWeatherData);
   storeTemplateData(currentWeatherData, forecastWeatherData);
