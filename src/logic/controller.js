@@ -57,6 +57,21 @@ async function retrieveAllWeatherData(searchValue) {
   const currentWeatherData = await processCurrentWeatherData(
     getCurrentWeatherData(searchValue),
   );
+
+  const giphyResponse = await fetch(
+    `https://api.giphy.com/v1/gifs/translate?api_key=89S6udLPrPGMQtrYC8QzzKI8KPaQrJfB&s=${currentWeatherData.condition}`,
+  );
+
+  const img = await giphyResponse.json();
+
+  const body = document.querySelector("body");
+
+  console.log(body);
+
+  body.style.backgroundImage = `url(${img.data.images.original.url})`;
+  body.style.backgroundSize = "contain";
+  console.log(img.data.images.original.url);
+
   const forecastWeatherData = await processForecastWeatherData(
     getForecastWeatherData(searchValue),
   );
