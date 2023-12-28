@@ -67,6 +67,7 @@ async function retrieveAllWeatherData(searchValue) {
 
     const giphyResponse = await fetch(
       `https://api.giphy.com/v1/gifs/translate?api_key=89S6udLPrPGMQtrYC8QzzKI8KPaQrJfB&s=${currentWeatherData.condition}`,
+      { mode: "cors" },
     );
 
     const img = await giphyResponse.json();
