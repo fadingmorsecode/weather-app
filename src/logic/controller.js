@@ -24,7 +24,7 @@ function renderTemplate() {
   createTemplate();
 }
 
-function appendTemplateData(currentData, forecastData) {
+function appendTemplateData(currentData, forecastData, img) {
   const currentUnit = getCurrentUnit();
 
   const currentLocation = document.querySelector(".current-location-text");
@@ -58,26 +58,25 @@ async function retrieveAllWeatherData(searchValue) {
     getCurrentWeatherData(searchValue),
   );
 
+  const forecastWeatherData = await processForecastWeatherData(
+    getForecastWeatherData(searchValue),
+  );
+
   const giphyResponse = await fetch(
     `https://api.giphy.com/v1/gifs/translate?api_key=89S6udLPrPGMQtrYC8QzzKI8KPaQrJfB&s=${currentWeatherData.condition}`,
   );
 
   const img = await giphyResponse.json();
 
-  const body = document.querySelector("body");
-
-  console.log(body);
-
-  body.style.backgroundImage = `url(${img.data.images.original.url})`;
-  body.style.backgroundSize = "contain";
-  console.log(img.data.images.original.url);
-
-  const forecastWeatherData = await processForecastWeatherData(
-    getForecastWeatherData(searchValue),
-  );
   loadingElement.classList.toggle("show");
+
+  const body = document.querySelector("body");
+  body.style.backgroundImage = `url(${img.data.images.original.url})`;
+  body.style.backgroundSize = "cover";
+  body.style.backgroundRepeat = "norepeat";
+
   renderTemplate();
-  appendTemplateData(currentWeatherData, forecastWeatherData);
+  appendTemplateData(currentWeatherData, forecastWeatherData, img);
   storeTemplateData(currentWeatherData, forecastWeatherData);
 }
 
