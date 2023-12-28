@@ -54,30 +54,41 @@ function appendTemplateData(currentData, forecastData, img) {
 async function retrieveAllWeatherData(searchValue) {
   const loadingElement = document.querySelector(".lds-dual-ring");
   loadingElement.classList.toggle("show");
-  const currentWeatherData = await processCurrentWeatherData(
-    getCurrentWeatherData(searchValue),
-  );
+  const errorText = document.querySelector(".error-text");
 
-  const forecastWeatherData = await processForecastWeatherData(
-    getForecastWeatherData(searchValue),
-  );
+  try {
+    const currentWeatherData = await processCurrentWeatherData(
+      getCurrentWeatherData(searchValue),
+    );
 
-  const giphyResponse = await fetch(
-    `https://api.giphy.com/v1/gifs/translate?api_key=89S6udLPrPGMQtrYC8QzzKI8KPaQrJfB&s=${currentWeatherData.condition}`,
-  );
+    const forecastWeatherData = await processForecastWeatherData(
+      getForecastWeatherData(searchValue),
+    );
 
-  const img = await giphyResponse.json();
+    const giphyResponse = await fetch(
+      `https://api.giphy.com/v1/gifs/translate?api_key=89S6udLPrPGMQtrYC8QzzKI8KPaQrJfB&s=${currentWeatherData.condition}`,
+    );
 
-  loadingElement.classList.toggle("show");
+    const img = await giphyResponse.json();
 
-  const body = document.querySelector("body");
-  body.style.backgroundImage = `url(${img.data.images.original.url})`;
-  body.style.backgroundSize = "cover";
-  body.style.backgroundRepeat = "norepeat";
+    loadingElement.classList.toggle("show");
 
-  renderTemplate();
-  appendTemplateData(currentWeatherData, forecastWeatherData, img);
-  storeTemplateData(currentWeatherData, forecastWeatherData);
+    const body = document.querySelector("body");
+    body.style.backgroundImage = `url(${img.data.images.original.url})`;
+    body.style.backgroundSize = "cover";
+    body.style.backgroundRepeat = "norepeat";
+
+    renderTemplate();
+    appendTemplateData(currentWeatherData, forecastWeatherData, img);
+    storeTemplateData(currentWeatherData, forecastWeatherData);
+
+    if (errorText.style.display === "block") {
+      errorText.style.display = "none";
+    }
+  } catch (err) {
+    errorText.style.display = "block";
+    loadingElement.classList.toggle("show");
+  }
 }
 
 function inputAction(e) {
